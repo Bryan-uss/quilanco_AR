@@ -4,13 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AR.js con Marcador Personalizado</title>
-  <!-- Carga A-Frame y AR.js -->
+  <!-- Cargar A-Frame y AR.js -->
   <script src="https://cdn.jsdelivr.net/npm/aframe@1.2.0"></script>
   <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/ar.js@2.2.1/aframe/build/aframe-ar.min.js"></script>
   <style>
     body {
       margin: 0;
       overflow: hidden;
+    }
+
+    a-scene {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Hacer que la cámara se ajuste correctamente */
+    #camera {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   </style>
 </head>
@@ -25,8 +40,9 @@
         position="0 0 0">
       </a-entity>
     </a-marker>
-    <!-- Cámara (la cámara se autoajustará con JS) -->
-    <a-entity id="camera" camera="facingMode: environment"></a-entity>
+    
+    <!-- Cámara -->
+    <a-entity id="camera" camera="facingMode: environment" position="0 0 0"></a-entity>
   </a-scene>
 
   <!-- Declarar los assets -->
@@ -35,28 +51,26 @@
     <a-asset-item id="quilancoMesh" src="quilanco_mesh.glb"></a-asset-item>
   </a-assets>
 
-  <!-- Script para ajustar la cámara dinámicamente -->
   <script>
     window.addEventListener('load', function() {
+      // Obtén el elemento de la cámara
       const cameraEntity = document.querySelector('#camera');
-
-      // Función para ajustar la escala de la cámara según el tamaño de la pantalla
-      function adjustCameraScale() {
+      
+      // Ajustar la posición y el tamaño de la cámara según el dispositivo
+      function adjustCameraPosition() {
+        // Obtener el tamaño de la ventana
         const width = window.innerWidth;
         const height = window.innerHeight;
 
-        // Establecer la escala según la resolución
-        const scaleFactor = Math.min(width, height) / 1000;  // Ajusta el valor de 1000 según sea necesario
-
-        // Aplicar la escala a la cámara
-        cameraEntity.setAttribute('scale', `${scaleFactor} ${scaleFactor} ${scaleFactor}`);
+        // Ajustar la posición de la cámara (puedes modificar estos valores según lo que necesites)
+        cameraEntity.setAttribute('position', `0 0 ${Math.min(width, height) / 150}`);
       }
 
-      // Ajustar la cámara al cargar la página
-      adjustCameraScale();
+      // Ajustar la cámara cuando la página se carga
+      adjustCameraPosition();
 
-      // Reajustar la escala de la cámara cuando cambie el tamaño de la ventana
-      window.addEventListener('resize', adjustCameraScale);
+      // Reajustar cuando la ventana cambie de tamaño
+      window.addEventListener('resize', adjustCameraPosition);
     });
   </script>
 </body>
