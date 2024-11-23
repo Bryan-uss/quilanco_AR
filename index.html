@@ -15,12 +15,12 @@
       <!-- Modelo GLB -->
       <a-entity 
         gltf-model="#quilancoMesh" 
-        scale="1.0 1.0 1.0" 
+        scale="0.1 0.1 0.1" 
         position="0 0 0">
       </a-entity>
     </a-marker>
-    <!-- Cámara -->
-    <a-entity camera></a-entity>
+    <!-- Cámara (especificando cámara trasera) -->
+    <a-entity camera="facingMode: environment"></a-entity>
   </a-scene>
 
   <!-- Declarar los assets -->
