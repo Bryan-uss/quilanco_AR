@@ -7,8 +7,14 @@
   <!-- Carga A-Frame y AR.js -->
   <script src="https://cdn.jsdelivr.net/npm/aframe@1.2.0"></script>
   <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/ar.js@2.2.1/aframe/build/aframe-ar.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
+<body>
   <a-scene embedded arjs>
     <!-- Marcador personalizado -->
     <a-marker type="pattern" url="mi_marcador.patt">
@@ -19,8 +25,8 @@
         position="0 0 0">
       </a-entity>
     </a-marker>
-    <!-- Cámara (especificando cámara trasera) -->
-    <a-entity camera="facingMode: environment"></a-entity>
+    <!-- Cámara (la cámara se autoajustará con JS) -->
+    <a-entity id="camera" camera="facingMode: environment"></a-entity>
   </a-scene>
 
   <!-- Declarar los assets -->
@@ -28,5 +34,30 @@
     <!-- Archivo GLB -->
     <a-asset-item id="quilancoMesh" src="quilanco_mesh.glb"></a-asset-item>
   </a-assets>
+
+  <!-- Script para ajustar la cámara dinámicamente -->
+  <script>
+    window.addEventListener('load', function() {
+      const cameraEntity = document.querySelector('#camera');
+
+      // Función para ajustar la escala de la cámara según el tamaño de la pantalla
+      function adjustCameraScale() {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+
+        // Establecer la escala según la resolución
+        const scaleFactor = Math.min(width, height) / 1000;  // Ajusta el valor de 1000 según sea necesario
+
+        // Aplicar la escala a la cámara
+        cameraEntity.setAttribute('scale', `${scaleFactor} ${scaleFactor} ${scaleFactor}`);
+      }
+
+      // Ajustar la cámara al cargar la página
+      adjustCameraScale();
+
+      // Reajustar la escala de la cámara cuando cambie el tamaño de la ventana
+      window.addEventListener('resize', adjustCameraScale);
+    });
+  </script>
 </body>
 </html>
